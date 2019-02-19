@@ -1,7 +1,7 @@
 const { Readable } = require('readable-stream')
 
 class S3ListBucketStream extends Readable {
-  constructor (s3, bucket, bucketPrefix, options = { objectMode: true }) {
+  constructor (s3, bucket, bucketPrefix, options = { objectMode: true, maxKeys: 1000 }) {
     super(options)
     this._s3 = s3
     this._bucket = bucket
@@ -9,6 +9,7 @@ class S3ListBucketStream extends Readable {
     this._lastResponse = undefined
     this._currentIndex = undefined
     this._stopped = true
+    this._maxKeys = (options && options.maxKeys) || 1000
   }
 
   _loadNextPage () {
@@ -17,7 +18,7 @@ class S3ListBucketStream extends Readable {
         Bucket: this._bucket,
         Prefix: this._bucketPrefix,
         ContinuationToken: this._lastResponse ? this._lastResponse.NextContinuationToken : undefined,
-        MaxKeys: 1000
+        MaxKeys: this._maxKeys
       }
 
       this._s3.listObjectsV2(params, (err, data) => {

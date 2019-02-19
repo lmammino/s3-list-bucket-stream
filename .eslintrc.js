@@ -2,7 +2,8 @@ module.exports = {
     "env": {
         "browser": true,
         "commonjs": true,
-        "es6": true
+        "es6": true,
+        "jest": true
     },
     "extends": "standard",
     "globals": {
@@ -12,7 +13,5 @@ module.exports = {
     "parserOptions": {
         "ecmaVersion": 2018
     },
-    "rules": {
-    },
-    "exclude": ["/pkg"]
+    "rules": {}
 };
