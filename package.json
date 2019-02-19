@@ -1,6 +1,6 @@
 {
   "name": "s3-list-bucket-stream",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Node.js stream library that allows you to stream a list of objects from an S3 bucket",
   "main": "src/index.js",
   "scripts": {
@@ -42,9 +42,20 @@
   },
   "@pika/pack": {
     "pipeline": [
-      ["@pika/plugin-standard-pkg", {"exclude": ["*.test.js"]}],
-      ["@pika/plugin-build-node"],
-      ["@pika/plugin-build-types"]
+      [
+        "@pika/plugin-standard-pkg",
+        {
+          "exclude": [
+            "*.test.js"
+          ]
+        }
+      ],
+      [
+        "@pika/plugin-build-node"
+      ],
+      [
+        "@pika/plugin-build-types"
+      ]
     ]
   }
 }
