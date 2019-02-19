@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: circleci/node:11
 
-    working_directory: ~/project
+    working_directory: ~/node11
 
     steps:
       - checkout
@@ -35,13 +35,13 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/*
+            - node11/*
 
   build_node10:
     docker:
       - image: circleci/node:10
 
-    working_directory: ~/project
+    working_directory: ~/node10
 
     steps:
       - checkout
@@ -72,13 +72,13 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/*
+            - node10/*
 
   build_node8:
     docker:
       - image: circleci/node:8
 
-    working_directory: ~/project
+    working_directory: ~/node8
 
     steps:
       - checkout
@@ -104,11 +104,11 @@ jobs:
 
   deploy:
     docker:
-      - image: circleci/node:10
+      - image: circleci/node:11
 
     steps:
       - attach_workspace:
-          at: ~/
+          at: ~/node11
 
       - run:
           name: configure NPM registry
@@ -123,7 +123,7 @@ jobs:
       #     command: mkdir -p ~/.ssh && ssh-keyscan -H github.com > ~/.ssh/known_hosts
       #
       # - run:
-      #     working_directory: ~/project
+      #     working_directory: ~/node11
       #     name: publish
       #     command: |
       #       npm publish && npm run release:tag;
