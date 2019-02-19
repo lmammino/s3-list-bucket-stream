@@ -1,0 +1,50 @@
+{
+  "name": "s3-list-bucket-stream",
+  "version": "1.0.0",
+  "description": "Node.js stream library that allows you to stream a list of objects from an S3 bucket",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lmammino/s3-list-bucket-stream.git"
+  },
+  "keywords": [
+    "Stream",
+    "Streams",
+    "AWS",
+    "S3",
+    "Bucket",
+    "List bucket",
+    "Object"
+  ],
+  "author": "Luciano Mammino",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lmammino/s3-list-bucket-stream/issues"
+  },
+  "homepage": "https://github.com/lmammino/s3-list-bucket-stream#readme",
+  "devDependencies": {
+    "@pika/pack": "^0.3.2",
+    "@pika/plugin-build-node": "^0.3.11",
+    "@pika/plugin-build-types": "^0.3.11",
+    "@pika/plugin-standard-pkg": "^0.3.11",
+    "eslint": "^5.14.1",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0"
+  },
+  "dependencies": {
+    "readable-stream": "^3.1.1"
+  },
+  "@pika/pack": {
+    "pipeline": [
+      ["@pika/plugin-standard-pkg", {"exclude": ["*.test.js"]}],
+      ["@pika/plugin-build-node"],
+      ["@pika/plugin-build-types"]
+    ]
+  }
+}
