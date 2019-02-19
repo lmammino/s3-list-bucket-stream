@@ -51,7 +51,8 @@
         "@pika/plugin-standard-pkg",
         {
           "exclude": [
-            "*.test.js"
+            "*.test.js",
+            "__snapshots__/*"
           ]
         }
       ],

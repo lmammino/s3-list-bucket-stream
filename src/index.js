@@ -1,8 +1,14 @@
 const { Readable } = require('readable-stream')
 
+const defaultOptions = {
+  objectMode: true,
+  maxKeys: 1000
+}
+
 class S3ListBucketStream extends Readable {
-  constructor (s3, bucket, bucketPrefix, options = { objectMode: true, maxKeys: 1000 }) {
-    super(options)
+  constructor (s3, bucket, bucketPrefix, options = {}) {
+    const mergedOptions = Object.assign({}, defaultOptions, options)
+    super(mergedOptions)
     this._s3 = s3
     this._bucket = bucket
     this._bucketPrefix = bucketPrefix
@@ -17,7 +23,9 @@ class S3ListBucketStream extends Readable {
       const params = {
         Bucket: this._bucket,
         Prefix: this._bucketPrefix,
-        ContinuationToken: this._lastResponse ? this._lastResponse.NextContinuationToken : undefined,
+        ContinuationToken: this._lastResponse
+          ? this._lastResponse.NextContinuationToken
+          : undefined,
         MaxKeys: this._maxKeys
       }
 
@@ -40,7 +48,10 @@ class S3ListBucketStream extends Readable {
       this._stopped = false
       this.emit('restarted', true)
       while (true) {
-        if (typeof this._lastResponse === 'undefined' || this._currentIndex >= this._lastResponse.Contents.length) {
+        if (
+          typeof this._lastResponse === 'undefined' ||
+          this._currentIndex >= this._lastResponse.Contents.length
+        ) {
           if (this._lastResponse && !this._lastResponse.IsTruncated) {
             return this.push(null) // stream is over
           }
@@ -50,7 +61,7 @@ class S3ListBucketStream extends Readable {
         if (!this.push(this._lastResponse.Contents[this._currentIndex++])) {
           this._stopped = true
           this.emit('stopped', true)
-          break // buffer full, stop until next _read call
+          break // reader buffer full, stop until next _read call
         }
       }
     } catch (err) {
