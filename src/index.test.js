@@ -7,9 +7,11 @@ class MockS3 {
     this._mockedPages = mockedPages
     this._currentPage = 0
     this._shouldFail = shouldFail
+    this._receivedParams = []
   }
 
   listObjectsV2 (params, cb) {
+    this._receivedParams.push(params)
     process.nextTick(() => {
       const error = this._shouldFail ? new Error('some error') : null
       const response = this._shouldFail
@@ -57,8 +59,13 @@ test('It should emit all the files from different pages', done => {
   stream.on('error', done.fail)
   stream.on('page', () => numPages++)
   stream.on('end', () => {
+    const continuationTokens = s3._receivedParams.map(
+      item => item.ContinuationToken
+    )
+
     expect(records).toMatchSnapshot()
     expect(numPages).toBe(3)
+    expect(continuationTokens).toMatchSnapshot()
     done()
   })
 })

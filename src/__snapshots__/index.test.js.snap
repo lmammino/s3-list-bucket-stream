@@ -47,6 +47,14 @@ Array [
 ]
 `;
 
+exports[`It should emit all the files from different pages 2`] = `
+Array [
+  undefined,
+  "token-2",
+  "token-4",
+]
+`;
+
 exports[`The stream should pause if reader buffer is full 1`] = `
 Array [
   Object {
