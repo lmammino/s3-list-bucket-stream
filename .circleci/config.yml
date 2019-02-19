@@ -1,5 +1,42 @@
 version: 2
 jobs:
+  build_node11:
+    docker:
+      - image: circleci/node:11
+
+    working_directory: ~/project
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-v11-{{ checksum "package.json" }}
+            - v1-dependencies-v11-
+            - v1-dependencies-
+
+      - run:
+          name: install dependencies
+          command: npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-v11-{{ checksum "package.json" }}
+
+      - run:
+          name: unit tests
+          command: npm test
+
+      # - run:
+      #     name: coverage reporting
+      #     command: npm run coverage:submit
+
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/*
+
   build_node10:
     docker:
       - image: circleci/node:10
@@ -22,7 +59,7 @@ jobs:
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-v6-{{ checksum "package.json" }}
+          key: v1-dependencies-v10-{{ checksum "package.json" }}
 
       - run:
           name: unit tests
@@ -43,11 +80,6 @@ jobs:
 
     working_directory: ~/project
 
-    # These are almost the same set of steps as above.
-    # Yaml doesn't allow you to concatenate lists: https://github.com/yaml/yaml/issues/35
-    # Not in these steps:
-    #  - uploading code coverage
-    #  - saving workspace for the deploy job
     steps:
       - checkout
 
@@ -100,10 +132,12 @@ workflows:
 
   build_test_deploy:
     jobs:
+      - build_node11
       - build_node10
       - build_node8
       - deploy:
           requires:
+            - build_node11
             - build_node10
             - build_node8
           filters:
