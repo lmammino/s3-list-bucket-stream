@@ -33,9 +33,10 @@ jobs:
           command: npm run coverage:submit
 
       - persist_to_workspace:
-          root: ~/node11
+          root: "."
           paths:
-            - node11/*
+            - "."
+
 
   build_node10:
     docker:
@@ -65,10 +66,6 @@ jobs:
           name: unit tests
           command: npm test
 
-      - persist_to_workspace:
-          root: ~/node10
-          paths:
-            - node10/*
 
   build_node8:
     docker:
@@ -98,10 +95,6 @@ jobs:
           name: unit tests
           command: npm test
 
-      - persist_to_workspace:
-          root: ~/node8
-          paths:
-            - node8/*
 
   deploy:
     docker:
@@ -128,6 +121,8 @@ jobs:
           name: publish
           command: |
             npm run pack:publish && npm run release:tag;
+
+
 workflows:
   version: 2
 
