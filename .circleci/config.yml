@@ -112,21 +112,21 @@ jobs:
 
       - run:
           name: configure NPM registry
-          command: echo "THIS WILL DEPLOY TO NPM eventually"
+          command: echo "Running in master. Attempting release"
 
-      # - run:
-      #     name: configure NPM registry
-      #     command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-      #
-      # - run:
-      #     name: configure GitHub SSH
-      #     command: mkdir -p ~/.ssh && ssh-keyscan -H github.com > ~/.ssh/known_hosts
-      #
-      # - run:
-      #     working_directory: ~/node11
-      #     name: publish
-      #     command: |
-      #       npm publish && npm run release:tag;
+      - run:
+          name: configure NPM registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+
+      - run:
+          name: configure GitHub SSH
+          command: mkdir -p ~/.ssh && ssh-keyscan -H github.com > ~/.ssh/known_hosts
+
+      - run:
+          working_directory: ~/node11
+          name: publish
+          command: |
+            npm run pack:publish && npm run release:tag;
 workflows:
   version: 2
 

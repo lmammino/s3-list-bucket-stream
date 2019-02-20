@@ -25,7 +25,7 @@ const defaultListObjectsV2Options = {
 class S3ListBucketStream extends Readable {
   /**
    * Initialize a new instance of S3ListBucketStream (invoked with new S3ListBucketStream)
-   * @param {Object} s3                                         An S3 client from the AWS SDK (or any object that implements a compatile `listObjectsV2` method)
+   * @param {Object} s3                                         An S3 client from the AWS SDK (or any object that implements a compatible `listObjectsV2` method)
    * @param {string} bucket                                     The name of the bucket to list
    * @param {string} bucketPrefix                               An optional prefix to list only files with the given prefix
    * @param {S3ListBucketStreamOptions} [options={}]            Stream options
