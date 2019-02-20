@@ -1,5 +1,11 @@
 # s3-list-bucket-stream
+
 Node.js stream library that allows you to stream a list of objects from an S3 bucket
+
+[![npm version](https://badge.fury.io/js/s3-list-bucket-stream.svg)](https://badge.fury.io/js/s3-list-bucket-stream)
+[![CircleCI](https://circleci.com/gh/lmammino/s3-list-bucket-stream.svg?style=shield)](https://circleci.com/gh/lmammino/s3-list-bucket-stream)
+[![Codecov coverage](https://codecov.io/gh/lmammino/s3-list-bucket-stream/branch/master/graph/badge.svg)](https://codecov.io/gh/lmammino/s3-list-bucket-stream)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Example
 
