@@ -13,7 +13,7 @@
     "test:package": "BUILD=true jest --coverage=false",
     "build": "pack build",
     "test": "npm run test:lint && npm run test:unit && npm run build && npm run test:package",
-    "pack:publish": "pack publish --no-yarn --tag $npm_package_version --verbose",
+    "pack:publish": "pack publish --no-yarn --verbose",
     "release:tag": "git tag $npm_package_version && git push --tags",
     "coverage:submit": "codecov"
   },
