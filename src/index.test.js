@@ -55,7 +55,9 @@ test('It should emit all the files from different pages', done => {
   const records = []
   let numPages = 0
 
-  const stream = new S3ListBucketStream(s3, 'some-bucket', '/some/prefix')
+  const stream = new S3ListBucketStream(s3, 'some-bucket', '/some/prefix', undefined, {
+    MaxKeys: 2
+  })
   stream.on('data', item => records.push(item.toString()))
   stream.on('error', done.fail)
   stream.on('page', () => numPages++)
@@ -64,7 +66,12 @@ test('It should emit all the files from different pages', done => {
       item => item.ContinuationToken
     )
 
+    const maxKeysOptions = s3._receivedParams.map(
+      item => item.MaxKeys
+    )
+
     expect(records).toMatchSnapshot()
+    expect(maxKeysOptions).toMatchSnapshot()
     expect(numPages).toBe(3)
     expect(continuationTokens).toMatchSnapshot()
     done()
@@ -115,9 +122,7 @@ test('The stream should pause if reader buffer is full', done => {
     createPage(2, 2),
     createPage(2, 4, true)
   ])
-  const stream = new S3ListBucketStream(s3, 'some-bucket', '/some/prefix', undefined, {
-    maxKeys: 2
-  })
+  const stream = new S3ListBucketStream(s3, 'some-bucket', '/some/prefix')
 
   let pushes = 0
   const originalPushFn = stream.push.bind(stream)

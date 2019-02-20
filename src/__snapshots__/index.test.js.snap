@@ -13,6 +13,14 @@ Array [
 
 exports[`It should emit all the files from different pages 2`] = `
 Array [
+  2,
+  2,
+  2,
+]
+`;
+
+exports[`It should emit all the files from different pages 3`] = `
+Array [
   undefined,
   "token-2",
   "token-4",

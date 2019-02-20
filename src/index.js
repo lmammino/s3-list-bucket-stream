@@ -1,15 +1,37 @@
 const { Readable } = require('readable-stream')
 
+/**
+ * Stream options
+ * @typedef {Object} S3ListBucketStreamOptions
+ * @property {boolean} fullMetadata - If true the stream will emit full Metadata objects for every listed bucket object. Default `false`
+ */
 const defaultOptions = {
   fullMetadata: false
 }
 
+/**
+ * listObjectsV2args
+ * @typedef {Object} ListObjectsV2args
+ * @property {number} MaxKeys - The number of keys to list in every call. Default `1000`
+ */
 const defaultListObjectsV2Options = {
-  maxKeys: 1000
+  MaxKeys: 1000
 }
 
+/**
+ * Readable stream that lists all the objects form an S3 bucket recursively
+ * @extends Readable
+ */
 class S3ListBucketStream extends Readable {
-  constructor (s3, bucket, bucketPrefix, options = {}, listObjectsV2args = {}) {
+  /**
+   * Initialize a new instance of S3ListBucketStream (invoked with new S3ListBucketStream)
+   * @param {Object} s3                                         An S3 client from the AWS SDK (or any object that implements a compatile `listObjectsV2` method)
+   * @param {string} bucket                                     The name of the bucket to list
+   * @param {string} bucketPrefix                               An optional prefix to list only files with the given prefix
+   * @param {S3ListBucketStreamOptions} [options={}]            Stream options
+   * @param {ListObjectsV2args} [listObjectsV2args={}]          Extra arguments to be passed to the listObjectsV2 call in the S3 client
+   */
+  constructor (s3, bucket, bucketPrefix = '', options = {}, listObjectsV2args = {}) {
     const mergedOptions = Object.assign({}, defaultOptions, options)
 
     // forces object mode if full metadata is enabled
