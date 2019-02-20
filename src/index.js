@@ -1,33 +1,49 @@
 const { Readable } = require('readable-stream')
 
 const defaultOptions = {
-  objectMode: true,
+  fullMetadata: false
+}
+
+const defaultListObjectsV2Options = {
   maxKeys: 1000
 }
 
 class S3ListBucketStream extends Readable {
-  constructor (s3, bucket, bucketPrefix, options = {}) {
+  constructor (s3, bucket, bucketPrefix, options = {}, listObjectsV2args = {}) {
     const mergedOptions = Object.assign({}, defaultOptions, options)
+
+    // forces object mode if full metadata is enabled
+    if (mergedOptions.fullMetadata) {
+      mergedOptions.objectMode = true
+    }
+
+    // invoke parent constructor
     super(mergedOptions)
+
+    // config
     this._s3 = s3
     this._bucket = bucket
     this._bucketPrefix = bucketPrefix
+    this._fullMetadata = mergedOptions.fullMetadata
+    this._listObjectsV2args = Object.assign({}, defaultListObjectsV2Options, listObjectsV2args)
+
+    // internal state
     this._lastResponse = undefined
     this._currentIndex = undefined
     this._stopped = true
-    this._maxKeys = (options && options.maxKeys) || 1000
   }
 
   _loadNextPage () {
     return new Promise((resolve, reject) => {
-      const params = {
+      const currentParams = {
         Bucket: this._bucket,
         Prefix: this._bucketPrefix,
         ContinuationToken: this._lastResponse
           ? this._lastResponse.NextContinuationToken
-          : undefined,
-        MaxKeys: this._maxKeys
+          : undefined
       }
+
+      const params = Object.assign({}, this._listObjectsV2args, currentParams)
 
       this._s3.listObjectsV2(params, (err, data) => {
         if (err) {
@@ -58,7 +74,13 @@ class S3ListBucketStream extends Readable {
           await this._loadNextPage()
         }
 
-        if (!this.push(this._lastResponse.Contents[this._currentIndex++])) {
+        let chunkToPush = this._lastResponse.Contents[this._currentIndex++]
+        if (!this._fullMetadata) {
+          // return only the object key (file name)
+          chunkToPush = chunkToPush.Key
+        }
+
+        if (!this.push(chunkToPush)) {
           this._stopped = true
           this.emit('stopped', true)
           break // reader buffer full, stop until next _read call
@@ -71,6 +93,7 @@ class S3ListBucketStream extends Readable {
 
   _read (size) {
     if (this._stopped) {
+      // if stopped, restart reading from the source S3 api
       this._startRead()
     }
   }

@@ -54,7 +54,34 @@ test('It should emit all the files from different pages', done => {
 
   const records = []
   let numPages = 0
+
   const stream = new S3ListBucketStream(s3, 'some-bucket', '/some/prefix')
+  stream.on('data', item => records.push(item.toString()))
+  stream.on('error', done.fail)
+  stream.on('page', () => numPages++)
+  stream.on('end', () => {
+    const continuationTokens = s3._receivedParams.map(
+      item => item.ContinuationToken
+    )
+
+    expect(records).toMatchSnapshot()
+    expect(numPages).toBe(3)
+    expect(continuationTokens).toMatchSnapshot()
+    done()
+  })
+})
+
+test('It should emit all the files from different pages with full metadata', done => {
+  const s3 = new MockS3([
+    createPage(2),
+    createPage(2, 2),
+    createPage(2, 4, true)
+  ])
+
+  const records = []
+  let numPages = 0
+
+  const stream = new S3ListBucketStream(s3, 'some-bucket', '/some/prefix', { fullMetadata: true })
   stream.on('data', item => records.push(item))
   stream.on('error', done.fail)
   stream.on('page', () => numPages++)
@@ -88,7 +115,7 @@ test('The stream should pause if reader buffer is full', done => {
     createPage(2, 2),
     createPage(2, 4, true)
   ])
-  const stream = new S3ListBucketStream(s3, 'some-bucket', '/some/prefix', {
+  const stream = new S3ListBucketStream(s3, 'some-bucket', '/some/prefix', undefined, {
     maxKeys: 2
   })
 
@@ -103,7 +130,7 @@ test('The stream should pause if reader buffer is full', done => {
   const records = []
   let emittedStopped = false
   let emittedRestarted = false
-  stream.on('data', item => records.push(item))
+  stream.on('data', item => records.push(item.toString()))
   stream.on('stopped', () => (emittedStopped = true))
   stream.on('restarted', () => (emittedRestarted = true))
   stream.on('error', done.fail)

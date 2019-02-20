@@ -2,48 +2,12 @@
 
 exports[`It should emit all the files from different pages 1`] = `
 Array [
-  Object {
-    "ETag": "etag-0",
-    "Key": "0.jpg",
-    "LastModified": "2019-02-19T19:35:20.892Z",
-    "Size": 0,
-    "StorageClass": "STANDARD",
-  },
-  Object {
-    "ETag": "etag-1",
-    "Key": "1.jpg",
-    "LastModified": "2019-02-19T19:35:20.892Z",
-    "Size": 100,
-    "StorageClass": "STANDARD",
-  },
-  Object {
-    "ETag": "etag-2",
-    "Key": "2.jpg",
-    "LastModified": "2019-02-19T19:35:20.892Z",
-    "Size": 200,
-    "StorageClass": "STANDARD",
-  },
-  Object {
-    "ETag": "etag-3",
-    "Key": "3.jpg",
-    "LastModified": "2019-02-19T19:35:20.892Z",
-    "Size": 300,
-    "StorageClass": "STANDARD",
-  },
-  Object {
-    "ETag": "etag-4",
-    "Key": "4.jpg",
-    "LastModified": "2019-02-19T19:35:20.892Z",
-    "Size": 400,
-    "StorageClass": "STANDARD",
-  },
-  Object {
-    "ETag": "etag-5",
-    "Key": "5.jpg",
-    "LastModified": "2019-02-19T19:35:20.892Z",
-    "Size": 500,
-    "StorageClass": "STANDARD",
-  },
+  "0.jpg",
+  "1.jpg",
+  "2.jpg",
+  "3.jpg",
+  "4.jpg",
+  "5.jpg",
 ]
 `;
 
@@ -55,7 +19,7 @@ Array [
 ]
 `;
 
-exports[`The stream should pause if reader buffer is full 1`] = `
+exports[`It should emit all the files from different pages with full metadata 1`] = `
 Array [
   Object {
     "ETag": "etag-0",
@@ -99,5 +63,24 @@ Array [
     "Size": 500,
     "StorageClass": "STANDARD",
   },
+]
+`;
+
+exports[`It should emit all the files from different pages with full metadata 2`] = `
+Array [
+  undefined,
+  "token-2",
+  "token-4",
+]
+`;
+
+exports[`The stream should pause if reader buffer is full 1`] = `
+Array [
+  "0.jpg",
+  "1.jpg",
+  "2.jpg",
+  "3.jpg",
+  "4.jpg",
+  "5.jpg",
 ]
 `;
