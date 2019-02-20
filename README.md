@@ -125,7 +125,7 @@ You can also specify the following extra options:
 
 #### ListObjectsV2args
 
-`ListObjectsV2args` is an object that can contain arbitrary [`s3.listObjectsV2` parameters](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#listObjectsV2-property) like `MaxKeys` (set to 1000 by default), `FetchOwner`, `RequestPayer` or `StartAfter`.
+`ListObjectsV2args` is an object that can contain arbitrary [`s3.listObjectsV2` parameters](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#listObjectsV2-property) like `MaxKeys` (set to `1000` by default), `FetchOwner`, `RequestPayer` or `StartAfter`.
 
 These parameters will be propagated to every internal `listObjectsV2` call to the S3 client
 provided at construction time.

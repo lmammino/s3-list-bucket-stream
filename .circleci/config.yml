@@ -33,7 +33,7 @@ jobs:
           command: npm run coverage:submit
 
       - persist_to_workspace:
-          root: ~/
+          root: ~/node11
           paths:
             - node11/*
 
@@ -65,12 +65,8 @@ jobs:
           name: unit tests
           command: npm test
 
-      # - run:
-      #     name: coverage reporting
-      #     command: npm run coverage:submit
-
       - persist_to_workspace:
-          root: ~/
+          root: ~/node10
           paths:
             - node10/*
 
@@ -101,6 +97,11 @@ jobs:
       - run:
           name: unit tests
           command: npm test
+
+      - persist_to_workspace:
+          root: ~/node8
+          paths:
+            - node8/*
 
   deploy:
     docker:
