@@ -117,6 +117,10 @@ jobs:
           command: mkdir -p ~/.ssh && ssh-keyscan -H github.com > ~/.ssh/known_hosts
 
       - run:
+          name: Tests before publish
+          command: ls -al && git status
+
+      - run:
           working_directory: ~/node11
           name: publish
           command: |
