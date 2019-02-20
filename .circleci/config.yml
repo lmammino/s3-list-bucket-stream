@@ -118,8 +118,8 @@ jobs:
 
       - run:
           working_directory: ~/node11
-          name: Tests before publish
-          command: ls -al && pwd && git status
+          name: Cleanup differences in package-lock before publish
+          command: git checkout package-lock.json
 
       - run:
           working_directory: ~/node11
