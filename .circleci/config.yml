@@ -123,6 +123,11 @@ jobs:
 
       - run:
           working_directory: ~/node11
+          name: Setup Git
+          command: git config user.email $GIT_EMAIL && git config user.name $GIT_NAME
+
+      - run:
+          working_directory: ~/node11
           name: publish
           command: |
             npm config set allow-same-version true && npm run pack:publish && npm run release:tag;
