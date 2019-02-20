@@ -19,3 +19,12 @@ const listBucketStream = new S3ListBucketStream(s3, 'some-bucket', 'path/to/file
 listBucketStream
   .pipe(process.stdout)
 ```
+
+Will output:
+
+```plain
+path/to/files/file1
+path/to/files/file2
+path/to/files/file3
+...
+```
