@@ -125,7 +125,7 @@ jobs:
           working_directory: ~/node11
           name: publish
           command: |
-            npm run pack:publish && npm run release:tag;
+            npm config set allow-same-version true && npm run pack:publish && npm run release:tag;
 
 
 workflows:
